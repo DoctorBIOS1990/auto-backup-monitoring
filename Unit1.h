@@ -48,6 +48,7 @@ __published:	// IDE-managed Components
 	void __fastcall ToggleSwitchClick(TObject *Sender);
 	void __fastcall timeActiveTimer(TObject *Sender);
 	void __fastcall lblImgOutputClick(TObject *Sender);
+	void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

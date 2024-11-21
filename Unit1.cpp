@@ -48,10 +48,10 @@ void __fastcall TmainForm::timeTimer(TObject* Sender)
 {
     // Looking Files
     for (int i = 0; i < countItems; i++) {
-		nowTime = StrToTime(TimeToStr(
-			FileDateToDateTime(FileAge(listFiles->Items->Strings[i]))));
-		saveTime = StrToTime(listTime->Items->Strings[i]);
-		ShowMessage(saveTime);
+        nowTime = StrToTime(TimeToStr(
+            FileDateToDateTime(FileAge(listFiles->Items->Strings[i]))));
+        saveTime = StrToTime(listTime->Items->Strings[i]);
+        ShowMessage(saveTime);
 
         if (nowTime > saveTime) {
             // Format Date
@@ -68,7 +68,7 @@ void __fastcall TmainForm::timeTimer(TObject* Sender)
             destiny = backupPath + dateTimeFormat + " - " +
                       ExtractFileName(listFiles->Items->Strings[i]);
 
-			CopyFile(source.c_str(), destiny.c_str(), FALSE);
+            CopyFile(source.c_str(), destiny.c_str(), FALSE);
         }
     }
 }
@@ -78,8 +78,8 @@ void __fastcall TmainForm::btnClearClick(TObject* Sender)
 {
     listFiles->Clear();
     listTime->Clear();
-	lblFilename->Caption = "Name: [ ? ]";
-	lblCount->Caption = "Total : [ ? ]";
+    lblFilename->Caption = "Name: [ ? ]";
+    lblCount->Caption = "Total : [ ? ]";
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::listFilesClick(TObject* Sender)
@@ -142,3 +142,10 @@ void __fastcall TmainForm::lblImgOutputClick(TObject* Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TmainForm::FormCreate(TObject* Sender)
+{
+	if (!DirectoryExists(backupPath)) {
+		CreateDir(backupPath);
+	}
+//---------------------------------------------------------------------------
+}

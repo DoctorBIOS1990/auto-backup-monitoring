@@ -9,4 +9,7 @@ It constantly monitors the modification of the files being worked on. If a power
 
 
 # :camera_flash: Screenshot
-<img src="https://github.com/DoctorBIOS1990/auto-backup-monitoring/blob/main/ScreenShot/ScreenShot.jpeg">
+<div align="center">
+  <img src="https://github.com/DoctorBIOS1990/auto-backup-monitoring/blob/main/Screenshot/ScreenShot.jpeg">
+</div>
+

@@ -28,14 +28,19 @@ void __fastcall TmainForm::btnOpenClick(TObject* Sender)
         countItems = FileOpenDialog->Files->Count;
     }
 
-    if (countItems > 0) {
-        for (int i = 0; i < countItems; i++) {
-            try {
-                listFiles->Items->Add(FileOpenDialog->Files->Strings[i]);
+	if (countItems > 0) {
+		for (int i = 0; i < countItems; i++) {
+			try {
+				//listFiles->Items->Add(FileOpenDialog->Files->Strings[i]);
+
+				TListItem* listItem = listView->Items->Add();
+				listItem->Caption = FileOpenDialog->Files->Strings[i];
+				listItem->ImageIndex = 0 ;
+
                 listTime->Items->Add(TimeToStr(FileDateToDateTime(
-                    FileAge(FileOpenDialog->Files->Strings[i]))));
+					FileAge(FileOpenDialog->Files->Strings[i]))));
                 lblCount->Caption =
-                    "Files: [ " + IntToStr(listFiles->Items->Count) + " ]";
+					"Files: [ " + IntToStr(listView->Items->Count) + " ]";
             } catch (Exception &Exception) {
             }
 
@@ -48,51 +53,39 @@ void __fastcall TmainForm::timeTimer(TObject* Sender)
 {
     // Looking Files
     for (int i = 0; i < countItems; i++) {
-        nowTime = StrToTime(TimeToStr(
-            FileDateToDateTime(FileAge(listFiles->Items->Strings[i]))));
-        saveTime = StrToTime(listTime->Items->Strings[i]);
-        ShowMessage(saveTime);
+		nowTime = StrToTime(TimeToStr(
+			FileDateToDateTime(FileAge(listView->Items->Item[i]->Caption))));
+		saveTime = StrToTime(listTime->Items->Strings[i]);
 
-        if (nowTime > saveTime) {
-            // Format Date
-            dateTimeFormat = StringReplace(DateTimeToStr(Now()), "/", "-",
-                TReplaceFlags() << rfReplaceAll);
+		if (nowTime > saveTime) {
+			// Format Date
+			dateTimeFormat = StringReplace(DateTimeToStr(Now()), "/", "-",
+				TReplaceFlags() << rfReplaceAll);
 
-            // Format Time
-            dateTimeFormat = StringReplace(
-                dateTimeFormat, ":", "-", TReplaceFlags() << rfReplaceAll);
+			// Format Time
+			dateTimeFormat = StringReplace(
+				dateTimeFormat, ":", "-", TReplaceFlags() << rfReplaceAll);
 
-            listTime->Items->Strings[i] = TimeToStr(nowTime);
+			listTime->Items->Strings[i] = TimeToStr(nowTime);
 
-            source = listFiles->Items->Strings[i];
-            destiny = backupPath + dateTimeFormat + " - " +
-                      ExtractFileName(listFiles->Items->Strings[i]);
+			source = listView->Items->Item[i]->Caption;
+			destiny = backupPath + dateTimeFormat + " - " +
+					  ExtractFileName(listView->Items->Item[i]->Caption);
 
             CopyFile(source.c_str(), destiny.c_str(), FALSE);
-        }
-    }
+		}
+	}
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::btnClearClick(TObject* Sender)
 {
-    listFiles->Clear();
-    listTime->Clear();
+	listView->Clear();
+	listTime->Clear();
     lblFilename->Caption = "Name: [ ? ]";
     lblCount->Caption = "Total : [ ? ]";
 }
-//---------------------------------------------------------------------------
-void __fastcall TmainForm::listFilesClick(TObject* Sender)
-{
-    int selected;
-    if (mainForm->listFiles->ItemIndex != -1) {
-        selected = mainForm->listFiles->ItemIndex;
-        mainForm->lblFilename->Caption =
-            "Name: [ " +
-            ExtractFileName(mainForm->listFiles->Items->Strings[selected]) +
-            " ]";
-    }
-}
+
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::imgGithubClick(TObject* Sender)
 {
@@ -103,7 +96,7 @@ void __fastcall TmainForm::imgGithubClick(TObject* Sender)
 void __fastcall TmainForm::ToggleSwitchClick(TObject* Sender)
 {
     if (ToggleSwitch->State == tssOn) {
-        if (listFiles->Items->Count == 0) {
+		if (listView->Items->Count == 0) {
             ToggleSwitch->State = tssOff;
             Application->MessageBox(TEXT("Must by include files in the list."),
                 TEXT("Error"), MB_OK | MB_ICONERROR);
@@ -149,3 +142,16 @@ void __fastcall TmainForm::FormCreate(TObject* Sender)
 	}
 //---------------------------------------------------------------------------
 }
+void __fastcall TmainForm::listViewClick(TObject *Sender)
+{
+    int selected;
+	if (mainForm->listView->ItemIndex != -1) {
+		selected = mainForm->listView->ItemIndex;
+		mainForm->lblFilename->Caption =
+			"Name: [ " +
+			ExtractFileName(mainForm->listView->Items->Item[selected]->Caption) +
+			" ]";
+	}
+}
+//---------------------------------------------------------------------------
+

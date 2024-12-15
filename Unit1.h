@@ -13,11 +13,12 @@
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.Imaging.pngimage.hpp>
 #include <Vcl.WinXCtrls.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.ImgList.hpp>
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
 __published:	// IDE-managed Components
-	TListBox *listFiles;
 	TBitBtn *btnOpen;
 	TTimer *time;
 	TFileOpenDialog *FileOpenDialog;
@@ -40,15 +41,17 @@ __published:	// IDE-managed Components
 	TLabel *lblActive;
 	TImage *lblImgOutput;
 	TLabel *lblOutput;
+	TListView *listView;
+	TImageList *ImageList;
 	void __fastcall btnOpenClick(TObject *Sender);
 	void __fastcall timeTimer(TObject *Sender);
 	void __fastcall btnClearClick(TObject *Sender);
-	void __fastcall listFilesClick(TObject *Sender);
 	void __fastcall imgGithubClick(TObject *Sender);
 	void __fastcall ToggleSwitchClick(TObject *Sender);
 	void __fastcall timeActiveTimer(TObject *Sender);
 	void __fastcall lblImgOutputClick(TObject *Sender);
 	void __fastcall FormCreate(TObject *Sender);
+	void __fastcall listViewClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

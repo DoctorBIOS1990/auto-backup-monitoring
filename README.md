@@ -6,7 +6,7 @@ In the current context of my country, I felt the need to constantly monitor the 
 <strong>How does it work?</strong>
 
 It constantly monitors the modification of the files being worked on. If a power outage occurs, a history of saved files recorded with the date and time of the files will be available.
-
+>  Developed in C++ Builder 11.2
 
 # :camera_flash: Screenshot
 <div align="center">

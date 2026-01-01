@@ -2,8 +2,10 @@
 
 #include <vcl.h>
 #include <Windows.h>
+#include <System.SysUtils.hpp>
 #pragma hdrstop
 #include "Unit1.h"
+
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -13,7 +15,6 @@ TmainForm* mainForm;
 int countItems;
 String backupPath = ExtractFilePath(Application->ExeName) + "\DATA\\";
 String source, destiny, dateTimeFormat;
-TTime saveTime, nowTime;
 
 //---------------------------------------------------------------------------
 __fastcall TmainForm::TmainForm(TComponent* Owner) : TForm(Owner) {}
@@ -37,14 +38,14 @@ void __fastcall TmainForm::btnOpenClick(TObject* Sender)
 				listItem->Caption = FileOpenDialog->Files->Strings[i];
 				listItem->ImageIndex = 0 ;
 
-                listTime->Items->Add(TimeToStr(FileDateToDateTime(
-					FileAge(FileOpenDialog->Files->Strings[i]))));
+				listTime->Items->Add(DateTimeToStr(FileDateToDateTime(
+					FileAge(FileOpenDialog->Files->Strings[i]) )));
                 lblCount->Caption =
 					"Files: [ " + IntToStr(listView->Items->Count) + " ]";
             } catch (Exception &Exception) {
             }
 
-            FileOpenDialog->Files->Strings[i] = "";
+			FileOpenDialog->Files->Strings[i] = "";
         }
     }
 }
@@ -52,12 +53,15 @@ void __fastcall TmainForm::btnOpenClick(TObject* Sender)
 void __fastcall TmainForm::timeTimer(TObject* Sender)
 {
     // Looking Files
-    for (int i = 0; i < countItems; i++) {
-		nowTime = StrToTime(TimeToStr(
-			FileDateToDateTime(FileAge(listView->Items->Item[i]->Caption))));
-		saveTime = StrToTime(listTime->Items->Strings[i]);
+	for (int i = 0; i < countItems; i++) {
+
+		TDateTime nowTime =
+			FileDateToDateTime( FileAge(listView->Items->Item[i]->Caption ) );
+
+		TDateTime saveTime = StrToDateTime(listTime->Items->Strings[i]);
 
 		if (nowTime > saveTime) {
+
 			// Format Date
 			dateTimeFormat = StringReplace(DateTimeToStr(Now()), "/", "-",
 				TReplaceFlags() << rfReplaceAll);
@@ -66,13 +70,13 @@ void __fastcall TmainForm::timeTimer(TObject* Sender)
 			dateTimeFormat = StringReplace(
 				dateTimeFormat, ":", "-", TReplaceFlags() << rfReplaceAll);
 
-			listTime->Items->Strings[i] = TimeToStr(nowTime);
+			listTime->Items->Strings[i] = DateTimeToStr(nowTime);
 
 			source = listView->Items->Item[i]->Caption;
 			destiny = backupPath + dateTimeFormat + " - " +
 					  ExtractFileName(listView->Items->Item[i]->Caption);
 
-            CopyFile(source.c_str(), destiny.c_str(), FALSE);
+			CopyFile(source.c_str(), destiny.c_str(), FALSE);
 		}
 	}
 }
@@ -118,6 +122,7 @@ void __fastcall TmainForm::ToggleSwitchClick(TObject* Sender)
 
 void __fastcall TmainForm::timeActiveTimer(TObject* Sender)
 {
+    // Effect the active text
     if (lblActive->Color == clGreen) {
         lblActive->Color = clWhite;
         lblActive->Font->Color = clBlack;

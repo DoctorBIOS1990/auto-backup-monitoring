@@ -7,9 +7,6 @@ Coordinates=73,144,64,58
 [FileOpenDialog]
 Coordinates=150,239,103,36
 
-[listFiles]
-Coordinates=232,10,101,124
-
 [time]
 Coordinates=101,239,40,36
 
@@ -30,7 +27,7 @@ Coordinates=343,10,53,58
 Coordinates=280,144,53,58
 
 []
-Coordinates=79,212,65,58
+Coordinates=232,10,101,124
 
 [btnClear]
 Coordinates=147,144,56,58
